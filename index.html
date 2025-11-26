@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -43,11 +44,11 @@
 <div id="contenedor-animacion">
     <img id="gif-interactivo" src="poster.png" alt="Haz clic para iniciar la sorpresa">
     
-    <audio id="musica-base" src="musicabase.MP3" loop preload="auto"></audio>
+    <audio id="musica-base" src="musicabase.mp3" loop preload="auto"></audio>
     
-    <audio id="sonido-clic" src="sonido-click.MP3" preload="auto"></audio>
+    <audio id="sonido-clic" src="sonido-click.mp3" preload="auto"></audio>
 
-    <audio id="sonido-loop-gif" src="sonido-loop-gif.MP3" loop preload="auto"></audio>
+    <audio id="sonido-loop-gif" src="sonido-loop-gif.mp3" loop preload="auto"></audio>
 </div>
 
 <p id="instruccion-texto">
@@ -56,7 +57,7 @@
 
 <script>
     // ----------------------------------------------------------------------
-    // LÓGICA JAVASCRIPT (VERSION V9 - CORRECCIÓN DE MAYÚSCULAS FINALES)
+    // LÓGICA JAVASCRIPT (VERSION V10 - FINAL)
     // ----------------------------------------------------------------------
     
     // OBTENER ELEMENTOS
@@ -65,17 +66,16 @@
     const sonidoClic = document.getElementById('sonido-clic');
     const gifLoopSound = document.getElementById('sonido-loop-gif');
 
-    // ESTADO Y FUENTES DE ARCHIVOS
+    // ESTADO Y FUENTES DE ARCHIVOS (TODO EN MINÚSCULAS)
     let estaAnimando = false;
     const srcPoster = 'poster.png';
-    // CORRECCIÓN: tu-animacion.GIF (El GIF tiene extensión mayúscula)
-    const srcGif = 'tu-animacion.GIF';                  
-    // CORRECCIÓN: PNG FINAL.png (El PNG final tiene espacio y minúscula)
+    // CORRECCIÓN FINAL: animacion.gif
+    const srcGif = 'animacion.gif';                  
+    // PNG final con espacio
     const srcFinal = 'PNG FINAL.png'; 
 
     // LÓGICA DE ROTACIÓN AVANZADA
     const masterFrameList = [
-        // Las PNGs de los frames son todas minúsculas
         '2.png', '3.png', '4.png', '5.png', '6.png', 
         '7.png', '8.png', '9.png', '10.png', '11.png' 
     ];
@@ -108,7 +108,6 @@
             // A. ACCIÓN: INICIAR LA ANIMACIÓN (PLAY)
             
             gifElement.src = srcGif;
-            // Los audios que deben sonar ahora tienen su extensión en mayúsculas
             gifLoopSound.play().catch(error => console.error('Error al reproducir loop del GIF:', error));
             estaAnimando = true;
 
