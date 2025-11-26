@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -44,11 +43,11 @@
 <div id="contenedor-animacion">
     <img id="gif-interactivo" src="poster.png" alt="Haz clic para iniciar la sorpresa">
     
-    <audio id="musica-base" src="musicabase.mp3" loop preload="auto"></audio>
+    <audio id="musica-base" src="musicabase.wav" loop preload="auto"></audio>
     
-    <audio id="sonido-clic" src="sonido-click.mp3" preload="auto"></audio>
+    <audio id="sonido-clic" src="sonido-click.wav" preload="auto"></audio>
 
-    <audio id="sonido-loop-gif" src="sonido-loop-gif.mp3" loop preload="auto"></audio>
+    <audio id="sonido-loop-gif" src="sonido-loop-gif.wav" loop preload="auto"></audio>
 </div>
 
 <p id="instruccion-texto">
@@ -57,7 +56,7 @@
 
 <script>
     // ----------------------------------------------------------------------
-    // LÓGICA JAVASCRIPT (VERSION V10 - FINAL)
+    // LÓGICA JAVASCRIPT (VERSION V12 - FINAL Y COMPATIBLE)
     // ----------------------------------------------------------------------
     
     // OBTENER ELEMENTOS
@@ -66,12 +65,10 @@
     const sonidoClic = document.getElementById('sonido-clic');
     const gifLoopSound = document.getElementById('sonido-loop-gif');
 
-    // ESTADO Y FUENTES DE ARCHIVOS (TODO EN MINÚSCULAS)
+    // ESTADO Y FUENTES DE ARCHIVOS
     let estaAnimando = false;
     const srcPoster = 'poster.png';
-    // CORRECCIÓN FINAL: animacion.gif
     const srcGif = 'animacion.gif';                  
-    // PNG final con espacio
     const srcFinal = 'PNG FINAL.png'; 
 
     // LÓGICA DE ROTACIÓN AVANZADA
