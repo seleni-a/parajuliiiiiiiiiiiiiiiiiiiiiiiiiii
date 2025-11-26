@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regalo Interactivo Besti (FINAL)</title>
+    <title>Regalo Interactivo Besti (Versión Final)</title>
     <style>
         /* CSS para centrar y manejar el cursor */
         body {
@@ -12,13 +12,12 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0fof0;
+            background-color: #f0f0f0;
             font-family: sans-serif;
             flex-direction: column;
         }
         #contenedor-animacion {
             position: relative;
-            /* Establece un tamaño para tu contenedor */
             width: 400px; 
             height: 400px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.2);
@@ -44,11 +43,11 @@
 <div id="contenedor-animacion">
     <img id="gif-interactivo" src="poster.png" alt="Haz clic para iniciar la sorpresa">
     
-    <audio id="musica-base" src="musicabase.mp3" loop preload="auto"></audio>
+    <audio id="musica-base" src="musicabase.MP3" loop preload="auto"></audio>
     
-    <audio id="sonido-clic" src="sonido-click.mp3" preload="auto"></audio>
+    <audio id="sonido-clic" src="sonido-click.MP3" preload="auto"></audio>
 
-    <audio id="sonido-loop-gif" src="sonido-loop-gif.mp3" loop preload="auto"></audio>
+    <audio id="sonido-loop-gif" src="sonido-loop-gif.MP3" loop preload="auto"></audio>
 </div>
 
 <p id="instruccion-texto">
@@ -57,7 +56,7 @@
 
 <script>
     // ----------------------------------------------------------------------
-    // LÓGICA JAVASCRIPT (VERSION FINAL V8 - Nombres Simples)
+    // LÓGICA JAVASCRIPT (VERSION V9 - CORRECCIÓN DE MAYÚSCULAS FINALES)
     // ----------------------------------------------------------------------
     
     // OBTENER ELEMENTOS
@@ -66,18 +65,17 @@
     const sonidoClic = document.getElementById('sonido-clic');
     const gifLoopSound = document.getElementById('sonido-loop-gif');
 
-    // ESTADO Y FUENTES DE ARCHIVOS (TODOS EN MINÚSCULAS)
+    // ESTADO Y FUENTES DE ARCHIVOS
     let estaAnimando = false;
-    // CORRECCIÓN FINAL: nombre simple poster.png
     const srcPoster = 'poster.png';
-    // CORRECCIÓN FINAL: nombre simple tu-animacion.gif
-    const srcGif = 'tu-animacion.gif';                  
-    // CORRECCIÓN FINAL: Nombre con espacio
+    // CORRECCIÓN: tu-animacion.GIF (El GIF tiene extensión mayúscula)
+    const srcGif = 'tu-animacion.GIF';                  
+    // CORRECCIÓN: PNG FINAL.png (El PNG final tiene espacio y minúscula)
     const srcFinal = 'PNG FINAL.png'; 
 
     // LÓGICA DE ROTACIÓN AVANZADA
     const masterFrameList = [
-        // CORRECCIÓN FINAL: nombres simples y extensión .png
+        // Las PNGs de los frames son todas minúsculas
         '2.png', '3.png', '4.png', '5.png', '6.png', 
         '7.png', '8.png', '9.png', '10.png', '11.png' 
     ];
@@ -89,7 +87,7 @@
     function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
+            [array[i], array[j]] = [array[i], array[j]];
         }
         return array;
     }
@@ -110,6 +108,7 @@
             // A. ACCIÓN: INICIAR LA ANIMACIÓN (PLAY)
             
             gifElement.src = srcGif;
+            // Los audios que deben sonar ahora tienen su extensión en mayúsculas
             gifLoopSound.play().catch(error => console.error('Error al reproducir loop del GIF:', error));
             estaAnimando = true;
 
