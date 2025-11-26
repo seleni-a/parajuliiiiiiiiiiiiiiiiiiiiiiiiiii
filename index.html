@@ -12,7 +12,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
+            background-color: #f0fof0;
             font-family: sans-serif;
             flex-direction: column;
         }
@@ -36,12 +36,26 @@
             margin-top: 15px;
             font-weight: bold;
         }
+        /* NUEVO: Estilo para la explosión */
+        #explosion-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none; /* Permite hacer clic a través de él */
+            display: none; /* Oculto por defecto */
+            z-index: 10; /* Asegura que esté por encima del GIF/PNG */
+        }
     </style>
 </head>
 <body>
 
 <div id="contenedor-animacion">
     <img id="gif-interactivo" src="poster.png" alt="Haz clic para iniciar la sorpresa">
+    
+    <img id="explosion-effect" src="explosion.gif" alt="Efecto de Explosión">
     
     <audio id="musica-base" src="musicabase.wav" loop preload="auto"></audio>
     
@@ -56,11 +70,12 @@
 
 <script>
     // ----------------------------------------------------------------------
-    // LÓGICA JAVASCRIPT (VERSION V12 - FINAL Y COMPATIBLE)
+    // LÓGICA JAVASCRIPT (VERSION V14 - FINAL DE EXPERIENCIA)
     // ----------------------------------------------------------------------
     
     // OBTENER ELEMENTOS
     const gifElement = document.getElementById('gif-interactivo');
+    const explosionElement = document.getElementById('explosion-effect');
     const musicaBase = document.getElementById('musica-base');
     const sonidoClic = document.getElementById('sonido-clic');
     const gifLoopSound = document.getElementById('sonido-loop-gif');
@@ -78,6 +93,7 @@
     ];
 
     let surpriseQueue = [];
+    // CAMBIO A 10: El PNG Final aparecerá después de 10 clics de sorpresa (un solo ciclo)
     let totalFramesShown = 0; 
     
     // Función de ayuda para mezclar la lista (Fisher-Yates Shuffle)
@@ -91,6 +107,16 @@
 
     // Inicializar la cola de sorpresas al cargar la página
     surpriseQueue = shuffle([...masterFrameList]);
+
+    // FUNCIÓN PARA ACTIVAR EL EFECTO DE EXPLOSIÓN
+    function triggerExplosion() {
+        explosionElement.style.display = 'block';
+        
+        // El tiempo debe ser menor a la reproducción del GIF para que sea un 'flash'
+        setTimeout(() => {
+            explosionElement.style.display = 'none';
+        }, 500); // Se muestra por medio segundo
+    }
 
     // EVENTO PRINCIPAL: Clic/Tap
     gifElement.addEventListener('click', function() {
@@ -111,8 +137,8 @@
         } else {
             // B. ACCIÓN: DETENER / MOSTRAR FRAME ALEATORIO O FINAL
             
-            // Si ya se mostraron 20 frames (dos ciclos completos)
-            if (totalFramesShown >= 20) {
+            // Si ya se mostraron 10 frames (un ciclo completo)
+            if (totalFramesShown >= 10) {
                 
                 // Mostrar el PNG Final
                 gifElement.src = srcFinal;
@@ -130,7 +156,7 @@
             } else {
                 // Lógica de Rotación Aleatoria Sin Repetición
                 
-                // Rellenar y mezclar si la cola está vacía
+                // Rellenar y mezclar si la cola está vacía (Esto sólo ocurriría si el contador no fuera 10, pero es seguro dejarlo).
                 if (surpriseQueue.length === 0) {
                     surpriseQueue = shuffle([...masterFrameList]);
                 }
@@ -138,6 +164,9 @@
                 // Obtener el siguiente frame de la cola
                 const randomFrame = surpriseQueue.pop();
                 gifElement.src = randomFrame; 
+                
+                // Activar el efecto de explosión
+                triggerExplosion();
                 
                 // Incrementar el contador total
                 totalFramesShown++; 
