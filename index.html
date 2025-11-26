@@ -12,12 +12,13 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
+            background-color: #f0fof0;
             font-family: sans-serif;
             flex-direction: column;
         }
         #contenedor-animacion {
             position: relative;
+            /* Establece un tamaño para tu contenedor */
             width: 400px; 
             height: 400px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.2);
@@ -30,7 +31,7 @@
             object-fit: cover;
             cursor: pointer;
         }
-        /* [1. CORRECCIÓN DE ESTILO] Texto Azul */
+        /* Texto Azul */
         #instruccion-texto {
             color: blue;
             margin-top: 15px;
@@ -41,11 +42,13 @@
 <body>
 
 <div id="contenedor-animacion">
-    <img id="gif-interactivo" src="primer-cuadro-gif.PNG" alt="Haz clic para iniciar la sorpresa">
+    <img id="gif-interactivo" src="poster.png" alt="Haz clic para iniciar la sorpresa">
     
-    <audio id="musica-base" src="musica-fondo.MP3" loop preload="auto"></audio>
-    <audio id="sonido-clic" src="sonido-click.MP3" preload="auto"></audio>
-    <audio id="sonido-loop-gif" src="sonido-loop-gif.MP3" loop preload="auto"></audio>
+    <audio id="musica-base" src="musicabase.mp3" loop preload="auto"></audio>
+    
+    <audio id="sonido-clic" src="sonido-click.mp3" preload="auto"></audio>
+
+    <audio id="sonido-loop-gif" src="sonido-loop-gif.mp3" loop preload="auto"></audio>
 </div>
 
 <p id="instruccion-texto">
@@ -54,7 +57,7 @@
 
 <script>
     // ----------------------------------------------------------------------
-    // LÓGICA JAVASCRIPT (VERSION FINAL CON ROTACIÓN AVANZADA)
+    // LÓGICA JAVASCRIPT (VERSION FINAL V8 - Nombres Simples)
     // ----------------------------------------------------------------------
     
     // OBTENER ELEMENTOS
@@ -63,25 +66,23 @@
     const sonidoClic = document.getElementById('sonido-clic');
     const gifLoopSound = document.getElementById('sonido-loop-gif');
 
-    // ESTADO Y FUENTES DE ARCHIVOS
+    // ESTADO Y FUENTES DE ARCHIVOS (TODOS EN MINÚSCULAS)
     let estaAnimando = false;
-    const srcPoster = 'primer-cuadro-gif.PNG';
-    const srcGif = 'tu-animacion.GIF';                  
-    // [2. NUEVO] Nombre del PNG final
-    const srcFinal = 'PNG FINAL.PNG'; 
+    // CORRECCIÓN FINAL: nombre simple poster.png
+    const srcPoster = 'poster.png';
+    // CORRECCIÓN FINAL: nombre simple tu-animacion.gif
+    const srcGif = 'tu-animacion.gif';                  
+    // CORRECCIÓN FINAL: Nombre con espacio
+    const srcFinal = 'PNG FINAL.png'; 
 
-    // LÓGICA DE ROTACIÓN AVANZADA (Shuffle and Exhaust)
-    // Master list de frames (no se modifica)
+    // LÓGICA DE ROTACIÓN AVANZADA
     const masterFrameList = [
-        '2.PNG', '3.PNG', '4.PNG', '5.PNG', '6.PNG', 
-        '7.PNG', '8.PNG', '9.PNG', '10.PNG', '11.PNG' 
+        // CORRECCIÓN FINAL: nombres simples y extensión .png
+        '2.png', '3.png', '4.png', '5.png', '6.png', 
+        '7.png', '8.png', '9.png', '10.png', '11.png' 
     ];
 
-    // Cola de frames por mostrar (se vacía y se rellena)
     let surpriseQueue = [];
-
-    // Contador de frames mostrados (para la condición del PNG Final)
-    // El PNG final se muestra cuando totalFramesShown llegue a 20 (dos ciclos completos).
     let totalFramesShown = 0; 
     
     // Función de ayuda para mezclar la lista (Fisher-Yates Shuffle)
@@ -115,38 +116,38 @@
         } else {
             // B. ACCIÓN: DETENER / MOSTRAR FRAME ALEATORIO O FINAL
             
-            // [2. CONDICIÓN FINAL] Si ya se mostraron 20 frames (dos ciclos completos)
+            // Si ya se mostraron 20 frames (dos ciclos completos)
             if (totalFramesShown >= 20) {
                 
                 // Mostrar el PNG Final
                 gifElement.src = srcFinal;
                 
-                // Detener todos los sonidos de interacción
+                // Detener interacción y sonidos
                 gifLoopSound.pause();
                 gifLoopSound.currentTime = 0; 
                 sonidoClic.currentTime = 0;
                 sonidoClic.play().catch(error => console.error('Error al reproducir sonido de clic:', error));
                 
-                // Opcional: Desactivar futuros clics después del final
+                // Desactivar futuros clics después del final
                 gifElement.removeEventListener('click', arguments.callee);
                 gifElement.style.cursor = 'default';
                 
             } else {
                 // Lógica de Rotación Aleatoria Sin Repetición
                 
-                // 1. Si la cola está vacía, rellenar y mezclar (inicia un nuevo ciclo)
+                // Rellenar y mezclar si la cola está vacía
                 if (surpriseQueue.length === 0) {
                     surpriseQueue = shuffle([...masterFrameList]);
                 }
 
-                // 2. Obtener el siguiente frame de la cola (y lo elimina)
+                // Obtener el siguiente frame de la cola
                 const randomFrame = surpriseQueue.pop();
                 gifElement.src = randomFrame; 
                 
-                // 3. Incrementar el contador total de frames mostrados
+                // Incrementar el contador total
                 totalFramesShown++; 
                 
-                // 4. Detener sonidos y actualizar estado
+                // Detener sonidos y actualizar estado
                 gifLoopSound.pause();
                 gifLoopSound.currentTime = 0; 
                 sonidoClic.currentTime = 0;
