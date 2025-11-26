@@ -1,15 +1,9 @@
-¡Absolutamente! Aquí tienes el código index.html final y corregido. He ajustado todas las extensiones a MAYÚSCULAS (.GIF, .MP3, .PNG) para que coincidan con cómo están subidos tus archivos, lo cual corregirá los errores 404 que estabas viendo.
-
-Copia este código completo y pégalo en el Bloc de Notas, y guárdalo como index.html.
-
-HTML
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regalo Interactivo Besti (Final)</title>
+    <title>Regalo Interactivo Besti (FINAL)</title>
     <style>
         /* CSS para centrar y manejar el cursor */
         body {
@@ -45,11 +39,11 @@ HTML
 <div id="contenedor-animacion">
     <img id="gif-interactivo" src="primer-cuadro-gif.PNG" alt="Haz clic para iniciar la sorpresa">
     
-    <audio id="musica-base" src="musica-fondo.MP3" loop></audio>
+    <audio id="musica-base" src="musica-fondo.MP3" loop preload="auto"></audio>
     
-    <audio id="sonido-clic" src="sonido-click.MP3"></audio>
+    <audio id="sonido-clic" src="sonido-click.MP3" preload="auto"></audio>
 
-    <audio id="sonido-loop-gif" src="sonido-loop-gif.MP3" loop></audio>
+    <audio id="sonido-loop-gif" src="sonido-loop-gif.MP3" loop preload="auto"></audio>
 </div>
 
 <p>
@@ -58,7 +52,7 @@ HTML
 
 <script>
     // ----------------------------------------------------------------------
-    // LÓGICA JAVASCRIPT (VERSION V7 FINAL: Random Frame en Pausa)
+    // LÓGICA JAVASCRIPT (VERSION V7 FINAL)
     // ----------------------------------------------------------------------
     
     // OBTENER ELEMENTOS
