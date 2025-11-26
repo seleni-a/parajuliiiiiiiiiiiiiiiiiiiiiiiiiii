@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrusel Interactivo Perritos V3</title>
+    <style>
+        /* CSS BÁSICO (sin cambios) */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: sans-serif;
+            flex-direction: column;
+        }
+        #contenedor-animacion {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        #contenedor-animacion img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div id="contenedor-animacion">
+    <img id="gif-interactivo" src="primer-cuadro-gif.png" alt="Haz clic para iniciar la animación">
+    
+    <audio id="musica-base" src="musica-fondo.mp3" loop></audio>
+    
+    <audio id="sonido-clic" src="sonido-click.mp3"></audio>
+
+    <audio id="sonido-loop-gif" src="sonido-loop-gif.mp3" loop></audio>
+</div>
+
+<p>
+    Haz clic en la imagen para interactuar.
+</p>
+
+<script>
+    // ----------------------------------------------------------------------
+    // LÓGICA JAVASCRIPT
+    // ----------------------------------------------------------------------
+    
+    // Obtener elementos
+    const gifElement = document.getElementById('gif-interactivo');
+    const musicaBase = document.getElementById('musica-base');
+    const sonidoClic = document.getElementById('sonido-clic');
+    const gifLoopSound = document.getElementById('sonido-loop-gif'); // NUEVO AUDIO
+
+    // Variables de estado
+    let estaAnimando = false;
+    const srcPoster = 'primer-cuadro-gif.png';
+    const srcGif = 'tu-animacion.gif';
+
+    // Evento principal: Clic/Tap
+    gifElement.addEventListener('click', function() {
+        
+        // 1. Iniciar la Música de Fondo (Se inicia con el primer clic)
+        if (musicaBase.paused) {
+            musicaBase.play().catch(error => console.log('Error al reproducir música base:', error));
+        }
+
+        // 2. Lógica de Pausa/Play de la Animación y Sonidos
+        if (!estaAnimando) {
+            // A. INICIAR LA ANIMACIÓN (Primer clic/tap)
+            
+            // 1. Mostrar el GIF
+            gifElement.src = srcGif;
+            
+            // 2. INICIAR EL AUDIO EN LOOP DEL GIF
+            gifLoopSound.play().catch(error => console.log('Error al reproducir loop del GIF:', error));
+            
+            // 3. Establecer el estado
+            estaAnimando = true;
+
+        } else {
+            // B. PAUSAR LA ANIMACIÓN
+            
+            // 1. Pausar el GIF (simulado)
+            gifElement.src = srcPoster; 
+            
+            // 2. DETENER EL AUDIO EN LOOP DEL GIF
+            gifLoopSound.pause();
+            gifLoopSound.currentTime = 0; // Opcional: Reinicia el loop para el próximo play
+            
+            // 3. Reproducir el sonido corto (clic/tapa)
+            sonidoClic.currentTime = 0;
+            sonidoClic.play().catch(error => console.log('Error al reproducir sonido de clic:', error));
+            
+            // 4. Establecer el estado
+            estaAnimando = false;
+        }
+    });
+</script>
+
+</body>
+</html>
