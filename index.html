@@ -1,3 +1,9 @@
+¡Absolutamente! Aquí tienes el código index.html final y corregido. He ajustado todas las extensiones a MAYÚSCULAS (.GIF, .MP3, .PNG) para que coincidan con cómo están subidos tus archivos, lo cual corregirá los errores 404 que estabas viendo.
+
+Copia este código completo y pégalo en el Bloc de Notas, y guárdalo como index.html.
+
+HTML
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -37,13 +43,13 @@
 <body>
 
 <div id="contenedor-animacion">
-    <img id="gif-interactivo" src="primer-cuadro-gif.png" alt="Haz clic para iniciar la sorpresa">
+    <img id="gif-interactivo" src="primer-cuadro-gif.PNG" alt="Haz clic para iniciar la sorpresa">
     
-    <audio id="musica-base" src="musica-fondo.mp3" loop></audio>
+    <audio id="musica-base" src="musica-fondo.MP3" loop></audio>
     
-    <audio id="sonido-clic" src="sonido-click.mp3"></audio>
+    <audio id="sonido-clic" src="sonido-click.MP3"></audio>
 
-    <audio id="sonido-loop-gif" src="sonido-loop-gif.mp3" loop></audio>
+    <audio id="sonido-loop-gif" src="sonido-loop-gif.MP3" loop></audio>
 </div>
 
 <p>
@@ -52,7 +58,7 @@
 
 <script>
     // ----------------------------------------------------------------------
-    // LÓGICA JAVASCRIPT (VERSION V7: Random Frame en Pausa)
+    // LÓGICA JAVASCRIPT (VERSION V7 FINAL: Random Frame en Pausa)
     // ----------------------------------------------------------------------
     
     // OBTENER ELEMENTOS
@@ -63,14 +69,17 @@
 
     // ESTADO Y FUENTES DE ARCHIVOS
     let estaAnimando = false;
-    const srcPoster = 'primer-cuadro-gif.png';          // Fuente PNG Inicial
-    const srcGif = 'tu-animacion.gif';                  // Fuente GIF (PLAY)
+    // CORRECCIÓN: Extensión .PNG
+    const srcPoster = 'primer-cuadro-gif.PNG';
+    // CORRECCIÓN: Extensión .GIF
+    const srcGif = 'tu-animacion.GIF';                  
 
     // ¡¡IMPORTANTE!! Lista de archivos PNG de frames para SELECCIÓN ALEATORIA.
     // ** SOLO INCLUYE LOS 10 FRAMES DE SORPRESA (DEL 2 AL 11) **
     const frameNames = [
-        '2.png', '3.png', '4.png', '5.png', '6.png', 
-        '7.png', '8.png', '9.png', '10.png', '11.png' 
+        // CORRECCIÓN: Extensión .PNG
+        '2.PNG', '3.PNG', '4.PNG', '5.PNG', '6.PNG', 
+        '7.PNG', '8.PNG', '9.PNG', '10.PNG', '11.PNG' 
     ];
 
     // FUNCIÓN PARA SELECCIONAR UN PNG AL AZAR
