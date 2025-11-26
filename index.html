@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Regalo Interactivo Besti (Versión Final)</title>
+    <title>Regalo Interactivo Besti (Final V16)</title>
     <style>
         /* CSS para centrar y manejar el cursor */
         body {
@@ -12,7 +12,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0fof0;
+            background-color: #f0f0f0;
             font-family: sans-serif;
             flex-direction: column;
         }
@@ -36,7 +36,7 @@
             margin-top: 15px;
             font-weight: bold;
         }
-        /* NUEVO: Estilo para la explosión */
+        /* ESTILO PARA LA EXPLOSIÓN */
         #explosion-effect {
             position: absolute;
             top: 0;
@@ -44,38 +44,28 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            pointer-events: none; /* Permite hacer clic a través de él */
-            display: none; /* Oculto por defecto */
-            z-index: 10; /* Asegura que esté por encima del GIF/PNG */
+            pointer-events: none;
+            display: none;
+            z-index: 10;
         }
-    </style>
-</head>
-<body>
-
-<div id="contenedor-animacion">
+    </style></head><body><div id="contenedor-animacion">
     <img id="gif-interactivo" src="poster.png" alt="Haz clic para iniciar la sorpresa">
     
     <img id="explosion-effect" src="explosion.gif" alt="Efecto de Explosión">
-    
+
     <audio id="musica-base" src="musicabase.wav" loop preload="auto"></audio>
     
     <audio id="sonido-clic" src="sonido-click.wav" preload="auto"></audio>
 
-    <audio id="sonido-loop-gif" src="sonido-loop-gif.wav" loop preload="auto"></audio>
-</div>
-
-<p id="instruccion-texto">
-    (Hacer cliccccccc en el "?" )
-</p>
-
-<script>
+    <audio id="sonido-loop-gif" src="sonido-loop-gif.wav" loop preload="auto"></audio></div><p id="instruccion-texto">
+    (Hacer cliccccccc en el "?" )</p><script>
     // ----------------------------------------------------------------------
-    // LÓGICA JAVASCRIPT (VERSION V14 - FINAL DE EXPERIENCIA)
+    // LÓGICA JAVASCRIPT (VERSION V16 - FINAL CON EXPLOSIÓN Y ROTACIÓN PURA)
     // ----------------------------------------------------------------------
     
     // OBTENER ELEMENTOS
     const gifElement = document.getElementById('gif-interactivo');
-    const explosionElement = document.getElementById('explosion-effect');
+    const explosionElement = document.getElementById('explosion-effect'); // NUEVO
     const musicaBase = document.getElementById('musica-base');
     const sonidoClic = document.getElementById('sonido-clic');
     const gifLoopSound = document.getElementById('sonido-loop-gif');
@@ -93,7 +83,7 @@
     ];
 
     let surpriseQueue = [];
-    // CAMBIO A 10: El PNG Final aparecerá después de 10 clics de sorpresa (un solo ciclo)
+    // Contador: El PNG Final aparecerá después de 10 clics de sorpresa (un solo ciclo)
     let totalFramesShown = 0; 
     
     // Función de ayuda para mezclar la lista (Fisher-Yates Shuffle)
@@ -107,21 +97,21 @@
 
     // Inicializar la cola de sorpresas al cargar la página
     surpriseQueue = shuffle([...masterFrameList]);
-
+    
     // FUNCIÓN PARA ACTIVAR EL EFECTO DE EXPLOSIÓN
     function triggerExplosion() {
         explosionElement.style.display = 'block';
         
-        // El tiempo debe ser menor a la reproducción del GIF para que sea un 'flash'
         setTimeout(() => {
             explosionElement.style.display = 'none';
         }, 500); // Se muestra por medio segundo
     }
 
+
     // EVENTO PRINCIPAL: Clic/Tap
     gifElement.addEventListener('click', function() {
         
-        // 1. INICIAR LA MÚSICA DE FONDO (Solo ocurre una vez al primer clic)
+        // 1. INICIAR LA MÚSICA DE FONDO (Obligatorio al primer clic del navegador)
         if (musicaBase.paused) {
             musicaBase.play().catch(error => console.error('Error al reproducir música base:', error));
         }
@@ -154,24 +144,27 @@
                 gifElement.style.cursor = 'default';
                 
             } else {
-                // Lógica de Rotación Aleatoria Sin Repetición
+                // Lógica de Rotación Aleatoria Única
                 
-                // Rellenar y mezclar si la cola está vacía (Esto sólo ocurriría si el contador no fuera 10, pero es seguro dejarlo).
+                // 1. Si la cola está vacía, rellenar y mezclar
                 if (surpriseQueue.length === 0) {
                     surpriseQueue = shuffle([...masterFrameList]);
                 }
 
-                // Obtener el siguiente frame de la cola
-                const randomFrame = surpriseQueue.pop();
+                // 2. Obtener un índice aleatorio del array QUE QUEDA 
+                const randomIndex = Math.floor(Math.random() * surpriseQueue.length);
+
+                // 3. Seleccionar el frame y quitarlo del array (Rotación Única)
+                const randomFrame = surpriseQueue.splice(randomIndex, 1)[0];
                 gifElement.src = randomFrame; 
                 
-                // Activar el efecto de explosión
+                // 4. Activar el efecto de explosión
                 triggerExplosion();
                 
-                // Incrementar el contador total
+                // 5. Incrementar el contador total
                 totalFramesShown++; 
                 
-                // Detener sonidos y actualizar estado
+                // 6. Detener sonidos y actualizar estado
                 gifLoopSound.pause();
                 gifLoopSound.currentTime = 0; 
                 sonidoClic.currentTime = 0;
@@ -180,7 +173,4 @@
                 estaAnimando = false;
             }
         }
-    });
-</script>
-</body>
-</html>
+    });</script></body></html>
