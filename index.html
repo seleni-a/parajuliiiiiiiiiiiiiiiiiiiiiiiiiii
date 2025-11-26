@@ -18,19 +18,23 @@
         }
         #contenedor-animacion {
             position: relative;
-            /* Establece un tamaño para tu contenedor */
             width: 400px; 
             height: 400px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.2);
             border-radius: 10px;
             overflow: hidden;
         }
-        /* Estilos para que la imagen (PNG o GIF) ocupe todo el contenedor */
         #contenedor-animacion img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             cursor: pointer;
+        }
+        /* [1. CORRECCIÓN DE ESTILO] Texto Azul */
+        #instruccion-texto {
+            color: blue;
+            margin-top: 15px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -40,19 +44,17 @@
     <img id="gif-interactivo" src="primer-cuadro-gif.PNG" alt="Haz clic para iniciar la sorpresa">
     
     <audio id="musica-base" src="musica-fondo.MP3" loop preload="auto"></audio>
-    
     <audio id="sonido-clic" src="sonido-click.MP3" preload="auto"></audio>
-
     <audio id="sonido-loop-gif" src="sonido-loop-gif.MP3" loop preload="auto"></audio>
 </div>
 
-<p>
-    Haz clic para iniciar y pausar/sorpresa.
+<p id="instruccion-texto">
+    (Hacer cliccccccc en el "?" )
 </p>
 
 <script>
     // ----------------------------------------------------------------------
-    // LÓGICA JAVASCRIPT (VERSION V7 FINAL)
+    // LÓGICA JAVASCRIPT (VERSION FINAL CON ROTACIÓN AVANZADA)
     // ----------------------------------------------------------------------
     
     // OBTENER ELEMENTOS
@@ -63,24 +65,36 @@
 
     // ESTADO Y FUENTES DE ARCHIVOS
     let estaAnimando = false;
-    // CORRECCIÓN: Extensión .PNG
     const srcPoster = 'primer-cuadro-gif.PNG';
-    // CORRECCIÓN: Extensión .GIF
     const srcGif = 'tu-animacion.GIF';                  
+    // [2. NUEVO] Nombre del PNG final
+    const srcFinal = 'PNG_FINAL.PNG'; 
 
-    // ¡¡IMPORTANTE!! Lista de archivos PNG de frames para SELECCIÓN ALEATORIA.
-    // ** SOLO INCLUYE LOS 10 FRAMES DE SORPRESA (DEL 2 AL 11) **
-    const frameNames = [
-        // CORRECCIÓN: Extensión .PNG
+    // LÓGICA DE ROTACIÓN AVANZADA (Shuffle and Exhaust)
+    // Master list de frames (no se modifica)
+    const masterFrameList = [
         '2.PNG', '3.PNG', '4.PNG', '5.PNG', '6.PNG', 
         '7.PNG', '8.PNG', '9.PNG', '10.PNG', '11.PNG' 
     ];
 
-    // FUNCIÓN PARA SELECCIONAR UN PNG AL AZAR
-    function getRandomFrame() {
-        const randomIndex = Math.floor(Math.random() * frameNames.length);
-        return frameNames[randomIndex];
+    // Cola de frames por mostrar (se vacía y se rellena)
+    let surpriseQueue = [];
+
+    // Contador de frames mostrados (para la condición del PNG Final)
+    // El PNG final se muestra cuando totalFramesShown llegue a 20 (dos ciclos completos).
+    let totalFramesShown = 0; 
+    
+    // Función de ayuda para mezclar la lista (Fisher-Yates Shuffle)
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
     }
+
+    // Inicializar la cola de sorpresas al cargar la página
+    surpriseQueue = shuffle([...masterFrameList]);
 
     // EVENTO PRINCIPAL: Clic/Tap
     gifElement.addEventListener('click', function() {
@@ -94,32 +108,52 @@
         if (!estaAnimando) {
             // A. ACCIÓN: INICIAR LA ANIMACIÓN (PLAY)
             
-            // 1. Mostrar el GIF animado
             gifElement.src = srcGif;
-            
-            // 2. INICIAR EL AUDIO EN LOOP DEL GIF
             gifLoopSound.play().catch(error => console.error('Error al reproducir loop del GIF:', error));
-            
-            // 3. Establecer el estado
             estaAnimando = true;
 
         } else {
-            // B. ACCIÓN: DETENER / MOSTRAR FRAME ALEATORIO
+            // B. ACCIÓN: DETENER / MOSTRAR FRAME ALEATORIO O FINAL
             
-            // 1. Pausar el GIF: Muestra un PNG aleatorio de la lista frameNames
-            const randomFrame = getRandomFrame();
-            gifElement.src = randomFrame; 
-            
-            // 2. DETENER EL AUDIO EN LOOP DEL GIF
-            gifLoopSound.pause();
-            gifLoopSound.currentTime = 0; // Reinicia el audio de loop
-            
-            // 3. Reproducir el sonido corto (clic/tapa)
-            sonidoClic.currentTime = 0;
-            sonidoClic.play().catch(error => console.error('Error al reproducir sonido de clic:', error));
-            
-            // 4. Establecer el estado
-            estaAnimando = false;
+            // [2. CONDICIÓN FINAL] Si ya se mostraron 20 frames (dos ciclos completos)
+            if (totalFramesShown >= 20) {
+                
+                // Mostrar el PNG Final
+                gifElement.src = srcFinal;
+                
+                // Detener todos los sonidos de interacción
+                gifLoopSound.pause();
+                gifLoopSound.currentTime = 0; 
+                sonidoClic.currentTime = 0;
+                sonidoClic.play().catch(error => console.error('Error al reproducir sonido de clic:', error));
+                
+                // Opcional: Desactivar futuros clics después del final
+                gifElement.removeEventListener('click', arguments.callee);
+                gifElement.style.cursor = 'default';
+                
+            } else {
+                // Lógica de Rotación Aleatoria Sin Repetición
+                
+                // 1. Si la cola está vacía, rellenar y mezclar (inicia un nuevo ciclo)
+                if (surpriseQueue.length === 0) {
+                    surpriseQueue = shuffle([...masterFrameList]);
+                }
+
+                // 2. Obtener el siguiente frame de la cola (y lo elimina)
+                const randomFrame = surpriseQueue.pop();
+                gifElement.src = randomFrame; 
+                
+                // 3. Incrementar el contador total de frames mostrados
+                totalFramesShown++; 
+                
+                // 4. Detener sonidos y actualizar estado
+                gifLoopSound.pause();
+                gifLoopSound.currentTime = 0; 
+                sonidoClic.currentTime = 0;
+                sonidoClic.play().catch(error => console.error('Error al reproducir sonido de clic:', error));
+                
+                estaAnimando = false;
+            }
         }
     });
 </script>
