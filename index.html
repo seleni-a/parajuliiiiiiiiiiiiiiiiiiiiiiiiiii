@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrusel Interactivo Perritos V3</title>
+    <title>Regalo Interactivo Besti (Final)</title>
     <style>
-        /* CSS BÁSICO (sin cambios) */
+        /* CSS para centrar y manejar el cursor */
         body {
             display: flex;
             justify-content: center;
@@ -18,12 +18,14 @@
         }
         #contenedor-animacion {
             position: relative;
-            width: 400px;
+            /* Establece un tamaño para tu contenedor */
+            width: 400px; 
             height: 400px;
             box-shadow: 0 8px 16px rgba(0,0,0,0.2);
             border-radius: 10px;
             overflow: hidden;
         }
+        /* Estilos para que la imagen (PNG o GIF) ocupe todo el contenedor */
         #contenedor-animacion img {
             width: 100%;
             height: 100%;
@@ -35,7 +37,7 @@
 <body>
 
 <div id="contenedor-animacion">
-    <img id="gif-interactivo" src="primer-cuadro-gif.png" alt="Haz clic para iniciar la animación">
+    <img id="gif-interactivo" src="primer-cuadro-gif.png" alt="Haz clic para iniciar la sorpresa">
     
     <audio id="musica-base" src="musica-fondo.mp3" loop></audio>
     
@@ -45,65 +47,78 @@
 </div>
 
 <p>
-    Haz clic en la imagen para interactuar.
+    Haz clic para iniciar y pausar/sorpresa.
 </p>
 
 <script>
     // ----------------------------------------------------------------------
-    // LÓGICA JAVASCRIPT
+    // LÓGICA JAVASCRIPT (VERSION V7: Random Frame en Pausa)
     // ----------------------------------------------------------------------
     
-    // Obtener elementos
+    // OBTENER ELEMENTOS
     const gifElement = document.getElementById('gif-interactivo');
     const musicaBase = document.getElementById('musica-base');
     const sonidoClic = document.getElementById('sonido-clic');
-    const gifLoopSound = document.getElementById('sonido-loop-gif'); // NUEVO AUDIO
+    const gifLoopSound = document.getElementById('sonido-loop-gif');
 
-    // Variables de estado
+    // ESTADO Y FUENTES DE ARCHIVOS
     let estaAnimando = false;
-    const srcPoster = 'primer-cuadro-gif.png';
-    const srcGif = 'tu-animacion.gif';
+    const srcPoster = 'primer-cuadro-gif.png';          // Fuente PNG Inicial
+    const srcGif = 'tu-animacion.gif';                  // Fuente GIF (PLAY)
 
-    // Evento principal: Clic/Tap
+    // ¡¡IMPORTANTE!! Lista de archivos PNG de frames para SELECCIÓN ALEATORIA.
+    // ** SOLO INCLUYE LOS 10 FRAMES DE SORPRESA (DEL 2 AL 11) **
+    const frameNames = [
+        '2.png', '3.png', '4.png', '5.png', '6.png', 
+        '7.png', '8.png', '9.png', '10.png', '11.png' 
+    ];
+
+    // FUNCIÓN PARA SELECCIONAR UN PNG AL AZAR
+    function getRandomFrame() {
+        const randomIndex = Math.floor(Math.random() * frameNames.length);
+        return frameNames[randomIndex];
+    }
+
+    // EVENTO PRINCIPAL: Clic/Tap
     gifElement.addEventListener('click', function() {
         
-        // 1. Iniciar la Música de Fondo (Se inicia con el primer clic)
+        // 1. INICIAR LA MÚSICA DE FONDO (Solo ocurre una vez al primer clic)
         if (musicaBase.paused) {
-            musicaBase.play().catch(error => console.log('Error al reproducir música base:', error));
+            musicaBase.play().catch(error => console.error('Error al reproducir música base:', error));
         }
 
-        // 2. Lógica de Pausa/Play de la Animación y Sonidos
+        // 2. LÓGICA PRINCIPAL (Play / Random Frame)
         if (!estaAnimando) {
-            // A. INICIAR LA ANIMACIÓN (Primer clic/tap)
+            // A. ACCIÓN: INICIAR LA ANIMACIÓN (PLAY)
             
-            // 1. Mostrar el GIF
+            // 1. Mostrar el GIF animado
             gifElement.src = srcGif;
             
             // 2. INICIAR EL AUDIO EN LOOP DEL GIF
-            gifLoopSound.play().catch(error => console.log('Error al reproducir loop del GIF:', error));
+            gifLoopSound.play().catch(error => console.error('Error al reproducir loop del GIF:', error));
             
             // 3. Establecer el estado
             estaAnimando = true;
 
         } else {
-            // B. PAUSAR LA ANIMACIÓN
+            // B. ACCIÓN: DETENER / MOSTRAR FRAME ALEATORIO
             
-            // 1. Pausar el GIF (simulado)
-            gifElement.src = srcPoster; 
+            // 1. Pausar el GIF: Muestra un PNG aleatorio de la lista frameNames
+            const randomFrame = getRandomFrame();
+            gifElement.src = randomFrame; 
             
             // 2. DETENER EL AUDIO EN LOOP DEL GIF
             gifLoopSound.pause();
-            gifLoopSound.currentTime = 0; // Opcional: Reinicia el loop para el próximo play
+            gifLoopSound.currentTime = 0; // Reinicia el audio de loop
             
             // 3. Reproducir el sonido corto (clic/tapa)
             sonidoClic.currentTime = 0;
-            sonidoClic.play().catch(error => console.log('Error al reproducir sonido de clic:', error));
+            sonidoClic.play().catch(error => console.error('Error al reproducir sonido de clic:', error));
             
             // 4. Establecer el estado
             estaAnimando = false;
         }
     });
 </script>
-
 </body>
 </html>
